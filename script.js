@@ -123,3 +123,41 @@ document.getElementById("form").addEventListener("submit", function (event) {
 
 let fechaActual = new Date();
 document.getElementById("anio").textContent = fechaActual.getFullYear();
+
+// -------------------------------------------
+// ETAPA 4 - SERVICIOS WEB
+// Información del repositorio Fixture Mundial FIFA 2026
+// -------------------------------------------
+
+const repositorio = document.querySelector("#repositorio");
+
+const controlador = new AbortController();
+
+setTimeout(function () {
+    controlador.abort();
+}, 5000);
+
+fetch("https://api.github.com/repos/Flor6277/fixture-mundial-2026", {
+    signal: controlador.signal
+})
+    .then(function (respuesta) {
+        if (!respuesta.ok) {
+            throw new Error("Error HTTP: " + respuesta.status);
+        }
+
+        return respuesta.json();
+    })
+    .then(function (datos) {
+        const nombre = document.createElement("p");
+        nombre.textContent = "Repositorio: " + datos.name;
+
+        const propietario = document.createElement("p");
+        propietario.textContent = "Propietario: " + datos.owner.login;
+
+        repositorio.appendChild(nombre);
+        repositorio.appendChild(propietario);
+    })
+    .catch(function (error) {
+        console.error("Ocurrió un error:", error);
+    });
+
