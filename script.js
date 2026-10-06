@@ -1,7 +1,4 @@
-// -------------------------------------------
 // EFECTO 01 - Scroll to top
-// -------------------------------------------
-
 window.addEventListener("scroll", function () {
     let btn = document.getElementById("arriba");
 
@@ -16,11 +13,7 @@ document.getElementById("arriba").addEventListener("click", function () {
     window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
-
-// -------------------------------------------
 // EFECTO 02 - Clics en la foto
-// -------------------------------------------
-
 let cliks_foto = 0;
 let grados_foto = 0;
 
@@ -40,11 +33,7 @@ document.getElementById("foto-secreta").addEventListener("click", function () {
     }
 });
 
-
-// -------------------------------------------
 // EFECTO 03 - Ver más / Ver menos
-// -------------------------------------------
-
 function ver_mas(id_detalle, id_boton) {
     let detalle = document.getElementById(id_detalle);
     let boton = document.getElementById(id_boton);
@@ -70,11 +59,7 @@ document.getElementById("ver-yani").addEventListener("click", function () {
     ver_mas("detalle-yani", "ver-yani");
 });
 
-
-// -------------------------------------------
 // FORMULARIO DE CONTACTO
-// -------------------------------------------
-
 function mostrarError(campo, texto) {
     campo.classList.add("campo-error");
 
@@ -127,18 +112,12 @@ document.getElementById("form").addEventListener("reset", function () {
     limpiarErrores();
 });
 
-
-// -------------------------------------------
 // EFECTO 04 - Año actual
-// -------------------------------------------
-
 let fechaActual = new Date();
 document.getElementById("anio").textContent = fechaActual.getFullYear();
 
-// -------------------------------------------
 // ETAPA 4 - SERVICIOS WEB
 // Repositorio público del portfolio
-// -------------------------------------------
 
 const controlador = new AbortController();
 
@@ -147,7 +126,7 @@ setTimeout(function () {
 }, 5000);
 
 fetch("https://api.github.com/repos/Flor6277/Flor6277.github.io", {
-    signal: controlador.signal
+    signal: controlador.signal,
 })
     .then(function (respuesta) {
         if (!respuesta.ok) {
