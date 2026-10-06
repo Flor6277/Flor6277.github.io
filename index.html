@@ -71,7 +71,10 @@
                             </dl>
                         </div>
                         <figure>
-                            <img src="assets/img/perfil.webp" />
+                            <img
+                                src="assets/img/perfil.webp"
+                                alt="Foto de Florencia Molina"
+                            />
                             <figcaption>Florencia Molina - 2026</figcaption>
                         </figure>
                     </div>
@@ -119,6 +122,7 @@
                             <img
                                 id="foto-secreta"
                                 src="assets/img/astronomia.jpg"
+                                alt="Imagen de astronomía y el Universo"
                             />
                             <figcaption>
                                 Soy una apasionada de la Astronomía y me gusta
@@ -216,7 +220,10 @@
                         <!-- Proyecto 1 -->
                         <article>
                             <figure>
-                                <img src="assets/img/fixture.webp" />
+                                <img
+                                    src="assets/img/fixture.webp"
+                                    alt="Captura del proyecto Fixture Mundial FIFA 2026"
+                                />
                                 <figcaption>Proyecto web full stack</figcaption>
                             </figure>
                             <div class="contenido-proyecto">
@@ -236,31 +243,37 @@
                                     <li>Express</li>
                                     <li>PostgreSQL</li>
                                 </ul>
-                                <div class="enlaces">
-                                    <a
-                                        href="https://fixturemundial26.vercel.app"
-                                        target="_blank"
-                                    >
-                                        Ver proyecto
-                                    </a>
-                                    <a
-                                        href="https://github.com/Flor6277/fixture-mundial-2026"
-                                        target="_blank"
-                                    >
-                                        Ver código
-                                    </a>
-                                </div>
+                                <div class="acciones-proyecto">
+                                    <div class="enlaces">
+                                        <a
+                                            href="https://fixturemundial26.vercel.app"
+                                            target="_blank"
+                                        >
+                                            Ver proyecto
+                                        </a>
 
-                                <section id="repositorio">
-                                    <h4>Información del repositorio</h4>
-                                </section>
+                                        <a
+                                            href="https://github.com/Flor6277"
+                                            target="_blank"
+                                        >
+                                            Ver código
+                                        </a>
+                                    </div>
+
+                                    <button id="ver-repositorio" type="button">
+                                        Ver información de GitHub
+                                    </button>
+                                </div>
                             </div>
                         </article>
 
                         <!-- Proyecto 2 -->
                         <article>
                             <figure>
-                                <img src="assets/img/landing-page.webp" />
+                                <img
+                                    src="assets/img/landing-page.webp"
+                                    alt="Captura del proyecto Diversity Web Designer"
+                                />
                                 <figcaption>Mi primera web</figcaption>
                             </figure>
                             <div class="contenido-proyecto">
@@ -279,7 +292,7 @@
                                 </ul>
                                 <div class="enlaces">
                                     <a
-                                        href="https://page-complete.vercel.app"
+                                        href="https://diversityweb.vercel.app"
                                         target="_blank"
                                     >
                                         Ver proyecto
@@ -352,6 +365,17 @@
                 </div>
             </section>
 
+            <div id="modal-repositorio" class="modal">
+                <div class="modal-contenido">
+                    <h2>Información del portfolio en GitHub</h2>
+                    <p id="repo-nombre"></p>
+                    <p id="repo-propietario"></p>
+                    <button id="cerrar-repositorio" type="button">
+                        Aceptar
+                    </button>
+                </div>
+            </div>
+
             <section id="contacto">
                 <div class="contenedor">
                     <div class="contacto-contenido">
@@ -388,7 +412,7 @@
                             </ul>
                         </div>
 
-                        <form id="form" action="#" method="post" novalidate>
+                        <form id="form" action="#" method="post">
                             <fieldset>
                                 <legend>Información personal</legend>
 
@@ -435,9 +459,9 @@
                                         <input
                                             id="phone"
                                             name="phone"
-                                            placeholder="Ej: 264 123 4567"
+                                            placeholder="Ej: 2641234567"
                                             type="tel"
-                                            pattern="[0-9 +()-]{8,20}"
+                                            pattern="[0-9]{10}"
                                             required
                                         />
                                     </div>
@@ -565,7 +589,11 @@
                                     proyecto y logró convertirla en una página
                                     clara, completa y fácil de usar.
 
-                                    <span class="detalle-referencia oculto">
+                                    <span
+                                        id="detalle-maru"
+                                        class="detalle-referencia"
+                                        style="display: none"
+                                    >
                                         Siempre estuvo atenta a los detalles y
                                         fue incorporando mejoras durante todo el
                                         desarrollo.
@@ -581,7 +609,11 @@
                                 </span>
                             </figcaption>
 
-                            <button class="boton-ver-mas" type="button">
+                            <button
+                                id="ver-maru"
+                                class="boton-ver-mas"
+                                type="button"
+                            >
                                 Ver más
                             </button>
                         </figure>
@@ -592,7 +624,11 @@
                                     Sus clases me ayudaron mucho a entender
                                     temas que antes me resultaban difíciles.
 
-                                    <span class="detalle-referencia oculto">
+                                    <span
+                                        id="detalle-mateo"
+                                        class="detalle-referencia"
+                                        style="display: none"
+                                    >
                                         Tiene paciencia para explicar y busca
                                         distintas formas de resolver los
                                         ejercicios hasta que realmente se
@@ -609,7 +645,11 @@
                                 </span>
                             </figcaption>
 
-                            <button class="boton-ver-mas" type="button">
+                            <button
+                                id="ver-mateo"
+                                class="boton-ver-mas"
+                                type="button"
+                            >
                                 Ver más
                             </button>
                         </figure>
@@ -621,7 +661,11 @@
                                     porque es responsable, organizada y siempre
                                     aporta ideas para mejorar el proyecto.
 
-                                    <span class="detalle-referencia oculto">
+                                    <span
+                                        id="detalle-yani"
+                                        class="detalle-referencia"
+                                        style="display: none"
+                                    >
                                         Cuando aparece un problema intenta
                                         buscar una solución antes de quedarse
                                         con la primera opción.
@@ -635,7 +679,11 @@
                                 <span> Referencia de proyecto </span>
                             </figcaption>
 
-                            <button class="boton-ver-mas" type="button">
+                            <button
+                                id="ver-yani"
+                                class="boton-ver-mas"
+                                type="button"
+                            >
                                 Ver más
                             </button>
                         </figure>
@@ -655,6 +703,8 @@
                                 alt="Logo FM"
                             />
                         </a>
+
+                        <p>Florencia Molina</p>
 
                         <address>
                             <a href="mailto:flor.molina99@gmail.com">
@@ -706,6 +756,6 @@
             </div>
         </footer>
 
-        <button id="up" type="button">↑</button>
+        <button id="arriba" type="button">↑</button>
     </body>
 </html>

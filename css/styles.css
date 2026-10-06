@@ -316,6 +316,28 @@ blockquote {
     color: #f3f0e8;
 }
 
+
+.acciones-proyecto {
+    width: 100%;
+    max-width: 320px;
+    margin-top: 20px;
+}
+
+.acciones-proyecto .enlaces {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.acciones-proyecto .enlaces a {
+    text-align: center;
+}
+
+#ver-repositorio {
+    width: 100%;
+}
+
 .contacto-contenido {
     display: grid;
     grid-template-columns: 1fr 2fr;

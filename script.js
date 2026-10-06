@@ -1,3 +1,7 @@
+// -------------------------------------------
+// EFECTO 01 - Scroll to top
+// -------------------------------------------
+
 window.addEventListener("scroll", function () {
     let btn = document.getElementById("arriba");
 
@@ -8,41 +12,68 @@ window.addEventListener("scroll", function () {
     }
 });
 
-document.getElementById("up").addEventListener("click", function () {
+document.getElementById("arriba").addEventListener("click", function () {
     window.scrollTo({ top: 0, behavior: "smooth" });
 });
+
+
+// -------------------------------------------
+// EFECTO 02 - Clics en la foto
+// -------------------------------------------
 
 let cliks_foto = 0;
 let grados_foto = 0;
 
 document.getElementById("foto-secreta").addEventListener("click", function () {
     cliks_foto++;
+
     let foto = document.getElementById("foto-secreta");
+
     if (cliks_foto === 5) {
         grados_foto = grados_foto + 360;
         foto.style.transition = "transform 1s";
         foto.style.transform = "rotate(" + grados_foto + "deg)";
     }
+
     if (cliks_foto === 10) {
         document.getElementById("mensaje-secreto").style.display = "block";
     }
 });
 
-function ver_mas() {
-    let boton = this;
-    let referencia = boton.closest("figure");
-    let detalle = referencia.querySelector(".detalle-referencia");
-    detalle.classList.toggle("oculto");
-    if (detalle.classList.contains("oculto")) {
-        boton.textContent = "Ver más";
-    } else {
+
+// -------------------------------------------
+// EFECTO 03 - Ver más / Ver menos
+// -------------------------------------------
+
+function ver_mas(id_detalle, id_boton) {
+    let detalle = document.getElementById(id_detalle);
+    let boton = document.getElementById(id_boton);
+
+    if (detalle.style.display === "none") {
+        detalle.style.display = "inline";
         boton.textContent = "Ver menos";
+    } else {
+        detalle.style.display = "none";
+        boton.textContent = "Ver más";
     }
 }
 
-document.querySelectorAll(".boton-ver-mas").forEach(function (boton) {
-    boton.addEventListener("click", ver_mas);
+document.getElementById("ver-maru").addEventListener("click", function () {
+    ver_mas("detalle-maru", "ver-maru");
 });
+
+document.getElementById("ver-mateo").addEventListener("click", function () {
+    ver_mas("detalle-mateo", "ver-mateo");
+});
+
+document.getElementById("ver-yani").addEventListener("click", function () {
+    ver_mas("detalle-yani", "ver-yani");
+});
+
+
+// -------------------------------------------
+// FORMULARIO DE CONTACTO
+// -------------------------------------------
 
 function mostrarError(campo, texto) {
     campo.classList.add("campo-error");
@@ -60,7 +91,7 @@ function limpiarErrores() {
     });
 
     document.querySelectorAll(".mensaje-error").forEach(function (mensaje) {
-        mensaje.remove();
+        mensaje.parentNode.removeChild(mensaje);
     });
 }
 
@@ -70,43 +101,15 @@ document.getElementById("form").addEventListener("submit", function (event) {
     limpiarErrores();
 
     let correcto = true;
-    let nombre = document.getElementById("name");
-    let apellido = document.getElementById("last-name");
-    let email = document.getElementById("email");
-    let telefono = document.getElementById("phone");
     let asunto = document.getElementById("subject");
     let mensaje = document.getElementById("message");
 
-    if (nombre.value.trim().length < 2 || !isNaN(nombre.value.trim())) {
-        mostrarError(nombre, "Ingresa un nombre válido");
-        correcto = false;
-    }
-
-    if (apellido.value.trim().length < 2 || !isNaN(apellido.value.trim())) {
-        mostrarError(apellido, "Ingresa un apellido válido");
-        correcto = false;
-    }
-
-    if (
-        email.value.trim() === "" ||
-        !email.value.includes("@") ||
-        !email.value.includes(".")
-    ) {
-        mostrarError(email, "Ingresa un correo electrónico válido");
-        correcto = false;
-    }
-
-    if (telefono.value.trim().length !== 10 || isNaN(telefono.value)) {
-        mostrarError(telefono, "Ingresa un teléfono válido de 10 números");
-        correcto = false;
-    }
-
-    if (asunto.value.trim().length < 2) {
+    if (asunto.value.length < 2) {
         mostrarError(asunto, "Ingresa un asunto");
         correcto = false;
     }
 
-    if (mensaje.value.trim().length < 10) {
+    if (mensaje.value.length < 10) {
         mostrarError(mensaje, "El mensaje debe tener al menos 10 caracteres");
         correcto = false;
     }
@@ -114,22 +117,28 @@ document.getElementById("form").addEventListener("submit", function (event) {
     if (correcto) {
         document.getElementById("modal-envio").style.display = "block";
     }
-    document
-        .getElementById("cerrar-modal")
-        .addEventListener("click", function () {
-            document.getElementById("modal-envio").style.display = "none";
-        });
 });
+
+document.getElementById("cerrar-modal").addEventListener("click", function () {
+    document.getElementById("modal-envio").style.display = "none";
+});
+
+document.getElementById("form").addEventListener("reset", function () {
+    limpiarErrores();
+});
+
+
+// -------------------------------------------
+// EFECTO 04 - Año actual
+// -------------------------------------------
 
 let fechaActual = new Date();
 document.getElementById("anio").textContent = fechaActual.getFullYear();
 
 // -------------------------------------------
 // ETAPA 4 - SERVICIOS WEB
-// Información del repositorio Fixture Mundial FIFA 2026
+// Repositorio público del portfolio
 // -------------------------------------------
-
-const repositorio = document.querySelector("#repositorio");
 
 const controlador = new AbortController();
 
@@ -137,7 +146,7 @@ setTimeout(function () {
     controlador.abort();
 }, 5000);
 
-fetch("https://api.github.com/repos/Flor6277/fixture-mundial-2026", {
+fetch("https://api.github.com/repos/Flor6277/Flor6277.github.io", {
     signal: controlador.signal
 })
     .then(function (respuesta) {
@@ -148,16 +157,24 @@ fetch("https://api.github.com/repos/Flor6277/fixture-mundial-2026", {
         return respuesta.json();
     })
     .then(function (datos) {
-        const nombre = document.createElement("p");
-        nombre.textContent = "Repositorio: " + datos.name;
+        document.getElementById("repo-nombre").textContent =
+            "Repositorio: " + datos.name;
 
-        const propietario = document.createElement("p");
-        propietario.textContent = "Propietario: " + datos.owner.login;
-
-        repositorio.appendChild(nombre);
-        repositorio.appendChild(propietario);
+        document.getElementById("repo-propietario").textContent =
+            "Propietario: " + datos.owner.login;
     })
     .catch(function (error) {
         console.error("Ocurrió un error:", error);
     });
 
+document
+    .getElementById("ver-repositorio")
+    .addEventListener("click", function () {
+        document.getElementById("modal-repositorio").style.display = "block";
+    });
+
+document
+    .getElementById("cerrar-repositorio")
+    .addEventListener("click", function () {
+        document.getElementById("modal-repositorio").style.display = "none";
+    });
