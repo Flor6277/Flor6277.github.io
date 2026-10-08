@@ -28,11 +28,11 @@ Entre algunas de las funciones de la página se encuentran:
 - Validación de formulario
 - Año actualizado automáticamente
 - Consumo de la API pública de GitHub
-- Muestra de los últimos repositorios actualizados
+- Muestra los últimos repositorios que fui actualizando
 
 ## API utilizada
-Para la parte de Servicios Web utilicé la API pública de GitHub.
-La página consulta mis repositorios y muestra algunos datos como:
+Para trabajar con Servicios Web usé la API pública de GitHub.
+La página consulta mis repositorios y muestra:
 - nombre del repositorio
 - descripción
 - último push
