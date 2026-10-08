@@ -75,8 +75,36 @@ document.getElementById("form").addEventListener("submit", function (event) {
     limpiarErrores();
 
     let correcto = true;
+
+    let nombre = document.getElementById("name");
+    let apellido = document.getElementById("last-name");
+    let email = document.getElementById("email");
+    let telefono = document.getElementById("phone");
     let asunto = document.getElementById("subject");
     let mensaje = document.getElementById("message");
+    let contacto = document.querySelector(
+        'input[name="contact-preference"]:checked'
+    );
+
+    if (nombre.value.length < 2) {
+        mostrarError(nombre, "Ingresa un nombre válido");
+        correcto = false;
+    }
+
+    if (apellido.value.length < 2) {
+        mostrarError(apellido, "Ingresa un apellido válido");
+        correcto = false;
+    }
+
+    if (!email.value.includes("@")) {
+        mostrarError(email, "Ingresa un correo válido");
+        correcto = false;
+    }
+
+    if (telefono.value.length !== 10) {
+        mostrarError(telefono, "El teléfono debe tener 10 números");
+        correcto = false;
+    }
 
     if (asunto.value.length < 2) {
         mostrarError(asunto, "Ingresa un asunto");
@@ -85,6 +113,17 @@ document.getElementById("form").addEventListener("submit", function (event) {
 
     if (mensaje.value.length < 10) {
         mostrarError(mensaje, "El mensaje debe tener al menos 10 caracteres");
+        correcto = false;
+    }
+
+    if (contacto === null) {
+        let opciones = document.querySelector(".opciones-contact");
+
+        let aviso = document.createElement("p");
+        aviso.className = "mensaje-error";
+        aviso.textContent = "Selecciona una opción de contacto";
+
+        opciones.appendChild(aviso);
         correcto = false;
     }
 
@@ -170,4 +209,70 @@ fetch(
         mensaje.textContent = "No se pudieron cargar los repositorios.";
         mensaje.style.color = "#ff6b6b";
         listaRepos.appendChild(mensaje);
+    });
+
+// frase de programación
+const fraseProgramacion = document.querySelector("#frase-programacion");
+const autorFrase = document.querySelector("#autor-frase");
+
+const controladorFrase = new AbortController();
+
+let tiempoFrase = setTimeout(function () {
+    controladorFrase.abort();
+}, 5000);
+
+let autorProgramacion = "";
+let controladorTraduccion;
+let tiempoTraduccion;
+
+fetch("https://programming-quotesapi.vercel.app/api/random", {
+    signal: controladorFrase.signal
+})
+    .then(function (respuesta) {
+        clearTimeout(tiempoFrase);
+
+        if (!respuesta.ok) {
+            throw new Error("Error HTTP: " + respuesta.status);
+        }
+
+        return respuesta.json();
+    })
+    .then(function (datos) {
+        autorProgramacion = datos.author;
+
+        fraseProgramacion.textContent = "“" + datos.quote + "”";
+        autorFrase.textContent = " - " + autorProgramacion;
+
+        let texto = encodeURIComponent(datos.quote);
+
+        controladorTraduccion = new AbortController();
+
+        tiempoTraduccion = setTimeout(function () {
+            controladorTraduccion.abort();
+        }, 5000);
+
+        return fetch(
+            "https://api.mymemory.translated.net/get?q=" +
+                texto +
+                "&langpair=en|es",
+            {
+                signal: controladorTraduccion.signal
+            }
+        );
+    })
+    .then(function (respuesta) {
+        clearTimeout(tiempoTraduccion);
+
+        if (!respuesta.ok) {
+            throw new Error("Error HTTP: " + respuesta.status);
+        }
+
+        return respuesta.json();
+    })
+    .then(function (traduccion) {
+        fraseProgramacion.textContent =
+            "“" + traduccion.responseData.translatedText + "”";
+    })
+    .catch(function (error) {
+        console.error("Ocurrió un error:", error);
     });
