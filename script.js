@@ -1,7 +1,4 @@
-// -------------------------------------------
-// EFECTO 01 - Scroll to top
-// -------------------------------------------
-
+// botón para volver arriba
 window.addEventListener("scroll", function () {
     let btn = document.getElementById("arriba");
 
@@ -16,35 +13,27 @@ document.getElementById("arriba").addEventListener("click", function () {
     window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
-
-// -------------------------------------------
-// EFECTO 02 - Clics en la foto
-// -------------------------------------------
-
-let cliks_foto = 0;
+// clics en la foto
+let clics_foto = 0;
 let grados_foto = 0;
 
 document.getElementById("foto-secreta").addEventListener("click", function () {
-    cliks_foto++;
+    clics_foto++;
 
     let foto = document.getElementById("foto-secreta");
 
-    if (cliks_foto === 5) {
+    if (clics_foto === 5) {
         grados_foto = grados_foto + 360;
         foto.style.transition = "transform 1s";
         foto.style.transform = "rotate(" + grados_foto + "deg)";
     }
 
-    if (cliks_foto === 10) {
+    if (clics_foto === 10) {
         document.getElementById("mensaje-secreto").style.display = "block";
     }
 });
 
-
-// -------------------------------------------
-// EFECTO 03 - Ver más / Ver menos
-// -------------------------------------------
-
+// ver más en referencias
 function ver_mas(id_detalle, id_boton) {
     let detalle = document.getElementById(id_detalle);
     let boton = document.getElementById(id_boton);
@@ -70,11 +59,7 @@ document.getElementById("ver-yani").addEventListener("click", function () {
     ver_mas("detalle-yani", "ver-yani");
 });
 
-
-// -------------------------------------------
-// FORMULARIO DE CONTACTO
-// -------------------------------------------
-
+// formulario
 function mostrarError(campo, texto) {
     campo.classList.add("campo-error");
 
@@ -127,75 +112,21 @@ document.getElementById("form").addEventListener("reset", function () {
     limpiarErrores();
 });
 
-
-// -------------------------------------------
-// EFECTO 04 - Año actual
-// -------------------------------------------
-
+// año actual
 let fechaActual = new Date();
 document.getElementById("anio").textContent = fechaActual.getFullYear();
 
-// -------------------------------------------
-// ETAPA 4 - SERVICIOS WEB
-// Repositorio público del portfolio
-// -------------------------------------------
-
+// últimos repositorios de GitHub
+const listaRepos = document.querySelector("#repos-recientes");
 const controlador = new AbortController();
 
 setTimeout(function () {
     controlador.abort();
 }, 5000);
 
-fetch("https://api.github.com/repos/Flor6277/Flor6277.github.io", {
-    signal: controlador.signal
-})
-    .then(function (respuesta) {
-        if (!respuesta.ok) {
-            throw new Error("Error HTTP: " + respuesta.status);
-        }
-
-        return respuesta.json();
-    })
-    .then(function (datos) {
-        document.getElementById("repo-nombre").textContent =
-            "Repositorio: " + datos.name;
-
-        document.getElementById("repo-propietario").textContent =
-            "Propietario: " + datos.owner.login;
-    })
-    .catch(function (error) {
-        console.error("Ocurrió un error:", error);
-    });
-
-document
-    .getElementById("ver-repositorio")
-    .addEventListener("click", function () {
-        document.getElementById("modal-repositorio").style.display = "block";
-    });
-
-document
-    .getElementById("cerrar-repositorio")
-    .addEventListener("click", function () {
-        document.getElementById("modal-repositorio").style.display = "none";
-    });
-
-
-// -------------------------------------------
-// ETAPA 4 - SERVICIOS WEB
-// Últimos repositorios actualizados
-// -------------------------------------------
-
-const controladorRepos = new AbortController();
-
-setTimeout(function () {
-    controladorRepos.abort();
-}, 5000);
-
 fetch(
     "https://api.github.com/users/Flor6277/repos?sort=pushed&direction=desc&per_page=3",
-    {
-        signal: controladorRepos.signal
-    }
+    { signal: controlador.signal }
 )
     .then(function (respuesta) {
         if (!respuesta.ok) {
@@ -206,13 +137,13 @@ fetch(
     })
     .then(function (repositorios) {
         repositorios.forEach(function (repositorio) {
-            let tarjeta = document.createElement("article");
-            tarjeta.className = "repo-card";
+            const tarjeta = document.createElement("article");
+            tarjeta.className = "tarjeta repo-card";
 
-            let nombre = document.createElement("h3");
+            const nombre = document.createElement("h4");
             nombre.textContent = repositorio.name;
 
-            let descripcion = document.createElement("p");
+            const descripcion = document.createElement("p");
 
             if (repositorio.description) {
                 descripcion.textContent = repositorio.description;
@@ -220,35 +151,34 @@ fetch(
                 descripcion.textContent = "Sin descripción";
             }
 
-            let fecha = new Date(repositorio.pushed_at);
-            let fechaTexto = document.createElement("p");
+            const fecha = new Date(repositorio.pushed_at);
+            const ultimoPush = document.createElement("p");
 
-            fechaTexto.textContent =
-                "Última modificación: " +
+            ultimoPush.textContent =
+                "Último push: " +
                 fecha.getDate() +
                 "/" +
                 (fecha.getMonth() + 1) +
                 "/" +
                 fecha.getFullYear();
 
-            let enlace = document.createElement("a");
+            const enlace = document.createElement("a");
             enlace.href = repositorio.html_url;
             enlace.target = "_blank";
             enlace.textContent = "Ver repositorio";
 
             tarjeta.appendChild(nombre);
             tarjeta.appendChild(descripcion);
-            tarjeta.appendChild(fechaTexto);
+            tarjeta.appendChild(ultimoPush);
             tarjeta.appendChild(enlace);
-
-            document.getElementById("repos-recientes").appendChild(tarjeta);
+            listaRepos.appendChild(tarjeta);
         });
     })
     .catch(function (error) {
-        let mensaje = document.createElement("p");
-        mensaje.textContent = "No se pudieron cargar los repositorios.";
-
-        document.getElementById("repos-recientes").appendChild(mensaje);
-
         console.error("Ocurrió un error:", error);
+
+        const mensaje = document.createElement("p");
+        mensaje.textContent = "No se pudieron cargar los repositorios.";
+        mensaje.style.color = "#ff6b6b";
+        listaRepos.appendChild(mensaje);
     });
