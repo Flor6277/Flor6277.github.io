@@ -33,30 +33,19 @@ document.getElementById("foto-secreta").addEventListener("click", function () {
     }
 });
 
-// ver más en referencias
-function ver_mas(id_detalle, id_boton) {
-    let detalle = document.getElementById(id_detalle);
-    let boton = document.getElementById(id_boton);
+let detalles = document.querySelectorAll(".detalle-referencia");
+let botones = document.querySelectorAll(".ver-mas");
 
-    if (detalle.style.display === "none") {
-        detalle.style.display = "inline";
-        boton.textContent = "Ver menos";
-    } else {
-        detalle.style.display = "none";
-        boton.textContent = "Ver más";
-    }
-}
-
-document.getElementById("ver-maru").addEventListener("click", function () {
-    ver_mas("detalle-maru", "ver-maru");
-});
-
-document.getElementById("ver-mateo").addEventListener("click", function () {
-    ver_mas("detalle-mateo", "ver-mateo");
-});
-
-document.getElementById("ver-yani").addEventListener("click", function () {
-    ver_mas("detalle-yani", "ver-yani");
+botones.forEach(function (boton, i) {
+    boton.addEventListener("click", function () {
+        if (detalles[i].style.display === "none") {
+            detalles[i].style.display = "inline";
+            boton.textContent = "Ver menos";
+        } else {
+            detalles[i].style.display = "none";
+            boton.textContent = "Ver más";
+        }
+    });
 });
 
 // formulario
@@ -126,7 +115,7 @@ setTimeout(function () {
 
 fetch(
     "https://api.github.com/users/Flor6277/repos?sort=pushed&direction=desc&per_page=3",
-    { signal: controlador.signal }
+    { signal: controlador.signal },
 )
     .then(function (respuesta) {
         if (!respuesta.ok) {
