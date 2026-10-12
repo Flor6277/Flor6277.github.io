@@ -270,8 +270,41 @@ blockquote {
     padding: 20px;
 }
 
+/* Cada card sirve de referencia para ubicar su ícono */
+#conocimientos .card {
+    position: relative;
+}
+
+/* Reserva espacio para el ícono junto al título */
+#conocimientos .card h4 {
+    padding-right: 56px;
+    min-height: 40px;
+    margin-bottom: 12px;
+}
+
 #conocimientos ul {
     margin-left: 20px;
+}
+
+/* La lista ocupa el ancho disponible */
+#conocimientos .contenido-conocimiento {
+    display: block;
+}
+
+#conocimientos .contenido-conocimiento ul {
+    margin-bottom: 0;
+}
+
+/* Ícono pequeño en la esquina superior derecha */
+#conocimientos .icono-conocimiento {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    border-radius: 0;
+    margin: 0;
 }
 
 /* proyectos */
@@ -643,5 +676,16 @@ footer address {
 
     .modal-content {
         margin: 100px auto;
+    }
+}
+
+@media (max-width: 480px) {
+    #conocimientos .contenido-conocimiento {
+        gap: 12px;
+    }
+
+    #conocimientos .icono-conocimiento {
+        width: 48px;
+        height: 48px;
     }
 }
