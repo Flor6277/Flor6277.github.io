@@ -12,7 +12,7 @@
 
     <body>
         <header class="header">
-            <div class="container header">
+            <div class="container">
                 <a class="logo" href="#home">
                     <img src="assets/img/logo-fm.png" alt="Logo FM" />
                 </a>
@@ -114,11 +114,11 @@
                                 ciencia de datos y Astronomía.
                             </p>
                             <blockquote>
-                                <span id="frase-programacion"
+                                <span
                                     >“Si buscas resultados distintos, no hagas
                                     siempre lo mismo”</span
                                 >
-                                <span id="autor-frase"> - Albert Einstein</span>
+                                <span> - Albert Einstein</span>
                             </blockquote>
                         </div>
                         <figure>
@@ -433,6 +433,10 @@
                                 </li>
                             </ul>
                         </div>
+
+                        <!-- El formulario está configurado con method="post", pero en este proyecto intercepto el evento submit con 
+                        preventDefault() para validar los datos mediante JavaScript y mostrar el modal, por lo que actualmente no se 
+                        realiza una petición POST real a un servidor -->
 
                         <form id="form" action="#" method="post" novalidate>
                             <fieldset>
@@ -756,6 +760,12 @@
             </div>
         </footer>
 
-        <button id="arriba" type="button">↑</button>
+        <button id="arriba" type="button">
+            <img
+                class="icono-conocimiento"
+                src="assets/img/icons/up-button.svg"
+                alt=""
+            />
+        </button>
     </body>
 </html>

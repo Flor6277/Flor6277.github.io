@@ -33,6 +33,7 @@ document.getElementById("foto-secreta").addEventListener("click", function () {
     }
 });
 
+// ver más en referencias
 let detalles = document.querySelectorAll(".detalle-referencia");
 let botones = document.querySelectorAll(".ver-mas");
 
@@ -86,12 +87,15 @@ document.getElementById("form").addEventListener("submit", function (event) {
         'input[name="contact-preference"]:checked',
     );
 
-    if (nombre.value.length < 2) {
+    let letras = /^[A-Za-zÁÉÍÓÚáéíóúÑñÜü' -]{2,40}$/;
+    let numeros = /^[0-9]{10}$/;
+
+    if (!letras.test(nombre.value)) {
         mostrarError(nombre, "Ingresa un nombre válido");
         correcto = false;
     }
 
-    if (apellido.value.length < 2) {
+    if (!letras.test(apellido.value)) {
         mostrarError(apellido, "Ingresa un apellido válido");
         correcto = false;
     }
@@ -101,7 +105,7 @@ document.getElementById("form").addEventListener("submit", function (event) {
         correcto = false;
     }
 
-    if (telefono.value.length !== 10) {
+    if (!numeros.test(telefono.value)) {
         mostrarError(telefono, "El teléfono debe tener 10 números");
         correcto = false;
     }
@@ -154,7 +158,10 @@ setTimeout(function () {
 
 fetch(
     "https://api.github.com/users/Flor6277/repos?sort=pushed&direction=desc&per_page=3",
-    { signal: controlador.signal },
+    {
+        method: "GET",
+        signal: controlador.signal,
+    },
 )
     .then(function (respuesta) {
         if (!respuesta.ok) {
@@ -166,10 +173,13 @@ fetch(
     .then(function (repositorios) {
         repositorios.forEach(function (repositorio) {
             const tarjeta = document.createElement("article");
-            tarjeta.className = "tarjeta repo-card";
+            tarjeta.className = "card repo-card";
+
             const nombre = document.createElement("h4");
             nombre.textContent = repositorio.name;
+
             const descripcion = document.createElement("p");
+
             if (repositorio.description) {
                 descripcion.textContent = repositorio.description;
             } else {
@@ -191,17 +201,21 @@ fetch(
             enlace.href = repositorio.html_url;
             enlace.target = "_blank";
             enlace.textContent = "Ver repositorio";
+
             tarjeta.appendChild(nombre);
             tarjeta.appendChild(descripcion);
             tarjeta.appendChild(ultimoPush);
             tarjeta.appendChild(enlace);
+
             listaRepos.appendChild(tarjeta);
         });
     })
     .catch(function (error) {
         console.error("Ocurrió un error:", error);
+
         const mensaje = document.createElement("p");
         mensaje.textContent = "No se pudieron cargar los repositorios.";
         mensaje.style.color = "#f15454";
+
         listaRepos.appendChild(mensaje);
     });
