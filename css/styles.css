@@ -14,11 +14,11 @@ html {
 }
 
 body {
-    padding-top: 75px;
     background-color: #0b0c0f;
     color: #f3f0e8;
     font-family: "Comfortaa", Arial, sans-serif;
     line-height: 1.6;
+    padding-top: 75px;
 }
 
 .container {
@@ -109,7 +109,7 @@ button {
     background-color: #c7b8ff;
     border: none;
     border-radius: 7px;
-    font-family: "Comfortaa", Arial, sans-serif;
+    font-family: inherit;
     transition: 0.3s;
 }
 
@@ -420,7 +420,7 @@ label {
     background-color: #171a21;
     border: 1px solid #343740;
     border-radius: 7px;
-    font-family: "Comfortaa", Arial, sans-serif;
+    font-family: inherit;
 }
 
 .campo-error {
@@ -519,6 +519,18 @@ label {
 
 .ver-mas {
     margin-top: 10px;
+    padding: 0;
+    color: #c7b8ff;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    font-family: inherit;
+}
+
+.ver-mas:hover {
+    color: #f3f0e8;
+    background-color: transparent;
+    transform: none;
 }
 
 footer {
