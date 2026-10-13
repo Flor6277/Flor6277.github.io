@@ -83,7 +83,7 @@ document.getElementById("form").addEventListener("submit", function (event) {
     let asunto = document.getElementById("subject");
     let mensaje = document.getElementById("message");
     let contacto = document.querySelector(
-        'input[name="contact-preference"]:checked'
+        'input[name="contact-preference"]:checked',
     );
 
     if (nombre.value.length < 2) {
@@ -209,70 +209,4 @@ fetch(
         mensaje.textContent = "No se pudieron cargar los repositorios.";
         mensaje.style.color = "#ff6b6b";
         listaRepos.appendChild(mensaje);
-    });
-
-// frase de programación
-const fraseProgramacion = document.querySelector("#frase-programacion");
-const autorFrase = document.querySelector("#autor-frase");
-
-const controladorFrase = new AbortController();
-
-let tiempoFrase = setTimeout(function () {
-    controladorFrase.abort();
-}, 5000);
-
-let autorProgramacion = "";
-let controladorTraduccion;
-let tiempoTraduccion;
-
-fetch("https://programming-quotesapi.vercel.app/api/random", {
-    signal: controladorFrase.signal
-})
-    .then(function (respuesta) {
-        clearTimeout(tiempoFrase);
-
-        if (!respuesta.ok) {
-            throw new Error("Error HTTP: " + respuesta.status);
-        }
-
-        return respuesta.json();
-    })
-    .then(function (datos) {
-        autorProgramacion = datos.author;
-
-        fraseProgramacion.textContent = "“" + datos.quote + "”";
-        autorFrase.textContent = " - " + autorProgramacion;
-
-        let texto = encodeURIComponent(datos.quote);
-
-        controladorTraduccion = new AbortController();
-
-        tiempoTraduccion = setTimeout(function () {
-            controladorTraduccion.abort();
-        }, 5000);
-
-        return fetch(
-            "https://api.mymemory.translated.net/get?q=" +
-                texto +
-                "&langpair=en|es",
-            {
-                signal: controladorTraduccion.signal
-            }
-        );
-    })
-    .then(function (respuesta) {
-        clearTimeout(tiempoTraduccion);
-
-        if (!respuesta.ok) {
-            throw new Error("Error HTTP: " + respuesta.status);
-        }
-
-        return respuesta.json();
-    })
-    .then(function (traduccion) {
-        fraseProgramacion.textContent =
-            "“" + traduccion.responseData.translatedText + "”";
-    })
-    .catch(function (error) {
-        console.error("Ocurrió un error:", error);
     });

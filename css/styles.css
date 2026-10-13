@@ -118,7 +118,6 @@ button:hover {
     transform: scale(1.05);
 }
 
-/* cabecera */
 header.header {
     position: fixed;
     top: 0;
@@ -242,7 +241,6 @@ figcaption {
     font-size: 12px;
 }
 
-/* sobre mi */
 .about-me-content {
     align-items: flex-start;
     gap: 50px;
@@ -270,12 +268,10 @@ blockquote {
     padding: 20px;
 }
 
-/* Cada card sirve de referencia para ubicar su ícono */
 #conocimientos .card {
     position: relative;
 }
 
-/* Reserva espacio para el ícono junto al título */
 #conocimientos .card h4 {
     padding-right: 56px;
     min-height: 40px;
@@ -286,7 +282,6 @@ blockquote {
     margin-left: 20px;
 }
 
-/* La lista ocupa el ancho disponible */
 #conocimientos .contenido-conocimiento {
     display: block;
 }
@@ -295,7 +290,6 @@ blockquote {
     margin-bottom: 0;
 }
 
-/* Ícono pequeño en la esquina superior derecha */
 #conocimientos .icono-conocimiento {
     position: absolute;
     top: 20px;
@@ -307,7 +301,6 @@ blockquote {
     margin: 0;
 }
 
-/* proyectos */
 #proyectos .card {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
     transition: 0.3s;
@@ -354,7 +347,6 @@ blockquote {
     padding: 25px;
 }
 
-/* contacto */
 .contact-content {
     display: grid;
     grid-template-columns: 1fr 2fr;
@@ -497,7 +489,6 @@ label {
     margin-top: 15px;
 }
 
-/* referencias y footer */
 #referencias .card {
     padding: 25px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
