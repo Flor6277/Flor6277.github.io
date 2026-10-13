@@ -23,7 +23,7 @@ document.getElementById("foto-secreta").addEventListener("click", function () {
     let foto = document.getElementById("foto-secreta");
 
     if (clics_foto === 5) {
-        grados_foto = grados_foto + 360;
+        grados_foto += 360;
         foto.style.transition = "transform 1s";
         foto.style.transform = "rotate(" + grados_foto + "deg)";
     }
@@ -48,7 +48,7 @@ botones.forEach(function (boton, i) {
     });
 });
 
-// formulario
+// validaciones en el formulario
 function mostrarError(campo, texto) {
     campo.classList.add("campo-error");
 
@@ -167,12 +167,9 @@ fetch(
         repositorios.forEach(function (repositorio) {
             const tarjeta = document.createElement("article");
             tarjeta.className = "tarjeta repo-card";
-
             const nombre = document.createElement("h4");
             nombre.textContent = repositorio.name;
-
             const descripcion = document.createElement("p");
-
             if (repositorio.description) {
                 descripcion.textContent = repositorio.description;
             } else {
@@ -194,7 +191,6 @@ fetch(
             enlace.href = repositorio.html_url;
             enlace.target = "_blank";
             enlace.textContent = "Ver repositorio";
-
             tarjeta.appendChild(nombre);
             tarjeta.appendChild(descripcion);
             tarjeta.appendChild(ultimoPush);
@@ -204,9 +200,8 @@ fetch(
     })
     .catch(function (error) {
         console.error("Ocurrió un error:", error);
-
         const mensaje = document.createElement("p");
         mensaje.textContent = "No se pudieron cargar los repositorios.";
-        mensaje.style.color = "#ff6b6b";
+        mensaje.style.color = "#f15454";
         listaRepos.appendChild(mensaje);
     });
