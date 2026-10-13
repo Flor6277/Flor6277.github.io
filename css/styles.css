@@ -616,6 +616,7 @@ footer address {
         position: static;
     }
 
+    /* selecciono los elementos con clase container cuyo padre inmediato es un header con clase header */
     header.header > .container,
     .hero-content,
     .about-me-content {

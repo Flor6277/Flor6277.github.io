@@ -1,7 +1,6 @@
 // botón para volver arriba
 window.addEventListener("scroll", function () {
     let btn = document.getElementById("arriba");
-
     if (window.scrollY > 200) {
         btn.style.display = "block";
     } else {
@@ -19,12 +18,10 @@ let grados_foto = 0;
 
 document.getElementById("foto-secreta").addEventListener("click", function () {
     clics_foto++;
-
     let foto = document.getElementById("foto-secreta");
-
     if (clics_foto === 5) {
-        grados_foto += 360;
-        foto.style.transition = "transform 1s";
+        grados_foto += 720;
+        foto.style.transition = "transform 2s";
         foto.style.transform = "rotate(" + grados_foto + "deg)";
     }
 
@@ -33,12 +30,13 @@ document.getElementById("foto-secreta").addEventListener("click", function () {
     }
 });
 
-// ver más en referencias
+// botón ver más en referencias
 let detalles = document.querySelectorAll(".detalle-referencia");
 let botones = document.querySelectorAll(".ver-mas");
 
 botones.forEach(function (boton, i) {
     boton.addEventListener("click", function () {
+        // si no está desplegado:
         if (detalles[i].style.display === "none") {
             detalles[i].style.display = "inline";
             boton.textContent = "Ver menos";
@@ -55,9 +53,11 @@ function mostrarError(campo, texto) {
     let mensaje = document.createElement("p");
     mensaje.className = "mensaje-error";
     mensaje.textContent = texto;
+    // si un campo tiene un error, lo marca y agrega debajo un mensaje explicando qué está mal
     campo.parentElement.appendChild(mensaje);
 }
 
+// quita las marcas y mensajes de error que se produjeron en el formulario
 function limpiarErrores() {
     document.querySelectorAll(".campo-error").forEach(function (campo) {
         campo.classList.remove("campo-error");
@@ -151,6 +151,9 @@ setTimeout(function () {
     controlador.abort();
 }, 5000);
 
+// Hace una petición GET a la API de GitHub, recibe los repositorios en JSON, recorre cada uno,
+// crea una tarjeta con nombre, descripción, fecha y enlace, y la agrega al DOM. Si algo falla,
+// muestra un mensaje de error
 fetch(
     "https://api.github.com/users/Flor6277/repos?sort=pushed&direction=desc&per_page=3",
     {
@@ -169,12 +172,9 @@ fetch(
         repositorios.forEach(function (repositorio) {
             const tarjeta = document.createElement("article");
             tarjeta.className = "card repo-card";
-
             const nombre = document.createElement("h4");
             nombre.textContent = repositorio.name;
-
             const descripcion = document.createElement("p");
-
             if (repositorio.description) {
                 descripcion.textContent = repositorio.description;
             } else {
@@ -183,7 +183,6 @@ fetch(
 
             const fecha = new Date(repositorio.pushed_at);
             const ultimoPush = document.createElement("p");
-
             ultimoPush.textContent =
                 "Último push: " +
                 fecha.getDate() +
@@ -196,20 +195,18 @@ fetch(
             enlace.href = repositorio.html_url;
             enlace.target = "_blank";
             enlace.textContent = "Ver repositorio";
-
             tarjeta.appendChild(nombre);
             tarjeta.appendChild(descripcion);
             tarjeta.appendChild(ultimoPush);
             tarjeta.appendChild(enlace);
-
             listaRepos.appendChild(tarjeta);
         });
     })
     .catch(function (error) {
-        console.error("Ocurrió un error:", error);
+        console.error("Error:", error);
 
         const mensaje = document.createElement("p");
-        mensaje.textContent = "No se pudieron cargar los repositorios.";
+        mensaje.textContent = "¡No se pudieron cargar los repositorios!";
         mensaje.style.color = "#f15454";
 
         listaRepos.appendChild(mensaje);
