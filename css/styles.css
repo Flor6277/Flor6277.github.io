@@ -258,6 +258,10 @@ blockquote {
     border-left: 4px solid #c7b8ff;
 }
 
+#mensaje-secreto {
+    display: none;
+}
+
 #conocimientos {
     margin-top: 60px;
     padding-top: 40px;

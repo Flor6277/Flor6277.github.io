@@ -52,11 +52,9 @@ botones.forEach(function (boton, i) {
 // validaciones en el formulario
 function mostrarError(campo, texto) {
     campo.classList.add("campo-error");
-
     let mensaje = document.createElement("p");
     mensaje.className = "mensaje-error";
     mensaje.textContent = texto;
-
     campo.parentElement.appendChild(mensaje);
 }
 
@@ -64,7 +62,6 @@ function limpiarErrores() {
     document.querySelectorAll(".campo-error").forEach(function (campo) {
         campo.classList.remove("campo-error");
     });
-
     document.querySelectorAll(".mensaje-error").forEach(function (mensaje) {
         mensaje.parentNode.removeChild(mensaje);
     });
@@ -74,9 +71,7 @@ document.getElementById("form").addEventListener("submit", function (event) {
     event.preventDefault();
 
     limpiarErrores();
-
     let correcto = true;
-
     let nombre = document.getElementById("name");
     let apellido = document.getElementById("last-name");
     let email = document.getElementById("email");
