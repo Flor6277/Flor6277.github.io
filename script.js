@@ -144,10 +144,9 @@ let fechaActual = new Date();
 document.getElementById("anio").textContent = fechaActual.getFullYear();
 
 // últimos repositorios de GitHub
-const listaRepos = document.querySelector("#repos-recientes");
 const controlador = new AbortController();
 
-setTimeout(function () {
+const tiempoEspera = setTimeout(function () {
     controlador.abort();
 }, 5000);
 
@@ -162,6 +161,14 @@ fetch(
     },
 )
     .then(function (respuesta) {
+        if (respuesta.status >= 400 && respuesta.status < 500) {
+            throw new Error(respuesta.status + " - Error del cliente");
+        }
+
+        if (respuesta.status >= 500 && respuesta.status < 600) {
+            throw new Error(respuesta.status + " - Error del servidor");
+        }
+
         if (!respuesta.ok) {
             throw new Error("Error HTTP: " + respuesta.status);
         }
@@ -206,8 +213,16 @@ fetch(
         console.error("Error:", error);
 
         const mensaje = document.createElement("p");
-        mensaje.textContent = "¡No se pudieron cargar los repositorios!";
-        mensaje.style.color = "#f15454";
 
+        if (error.name === "AbortError") {
+            mensaje.textContent = "La solicitud tardó demasiado.";
+        } else {
+            mensaje.textContent = "¡No se pudieron cargar los repositorios!";
+        }
+
+        mensaje.style.color = "#f15454";
         listaRepos.appendChild(mensaje);
+    })
+    .finally(function () {
+        clearTimeout(tiempoEspera);
     });
