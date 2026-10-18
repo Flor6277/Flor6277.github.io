@@ -144,15 +144,82 @@ let fechaActual = new Date();
 document.getElementById("anio").textContent = fechaActual.getFullYear();
 
 // últimos repositorios de GitHub
+const listaRepos = document.querySelector("#repos-recientes");
 const controlador = new AbortController();
 
 const tiempoEspera = setTimeout(function () {
     controlador.abort();
 }, 5000);
 
-// Hace una petición GET a la API de GitHub, recibe los repositorios en JSON, recorre cada uno,
-// crea una tarjeta con nombre, descripción, fecha y enlace, y la agrega al DOM. Si algo falla,
-// muestra un mensaje de error
+// Copia local de repositorios que ya aparecen enlazados en el portfolio.
+// Se utiliza solo si falla la API. No representa necesariamente los últimos repositorios.
+const repositoriosGuardados = [
+    {
+        name: "Flor6277.github.io",
+        description: "Repositorio del portfolio personal",
+        pushed_at: null,
+        html_url: "https://github.com/Flor6277/Flor6277.github.io",
+    },
+    {
+        name: "1st-LandingPage",
+        description: "Proyecto de landing page",
+        pushed_at: null,
+        html_url: "https://github.com/Flor6277/1st-LandingPage",
+    },
+    {
+        name: "Clases-Popi",
+        description: "Sitio de clases",
+        pushed_at: null,
+        html_url: "https://github.com/Flor6277/Clases-Popi",
+    },
+];
+
+// Crea las tarjetas HTML con los datos que recibe.
+function mostrarRepositorios(repositorios) {
+    listaRepos.textContent = "";
+
+    repositorios.forEach(function (repositorio) {
+        const tarjeta = document.createElement("article");
+        tarjeta.className = "card repo-card";
+
+        const nombre = document.createElement("h4");
+        nombre.textContent = repositorio.name;
+
+        const descripcion = document.createElement("p");
+        if (repositorio.description) {
+            descripcion.textContent = repositorio.description;
+        } else {
+            descripcion.textContent = "Sin descripción";
+        }
+
+        const ultimoPush = document.createElement("p");
+        if (repositorio.pushed_at) {
+            const fecha = new Date(repositorio.pushed_at);
+            ultimoPush.textContent =
+                "Último push: " +
+                fecha.getDate() +
+                "/" +
+                (fecha.getMonth() + 1) +
+                "/" +
+                fecha.getFullYear();
+        } else {
+            ultimoPush.textContent = "Fecha no disponible en copia local";
+        }
+
+        const enlace = document.createElement("a");
+        enlace.href = repositorio.html_url;
+        enlace.target = "_blank";
+        enlace.textContent = "Ver repositorio";
+
+        tarjeta.appendChild(nombre);
+        tarjeta.appendChild(descripcion);
+        tarjeta.appendChild(ultimoPush);
+        tarjeta.appendChild(enlace);
+        listaRepos.appendChild(tarjeta);
+    });
+}
+
+// Primero consulta la API real para mostrar los repositorios actualizados.
 fetch(
     "https://api.github.com/users/Flor6277/repos?sort=pushed&direction=desc&per_page=3",
     {
@@ -161,67 +228,79 @@ fetch(
     },
 )
     .then(function (respuesta) {
-        if (respuesta.status >= 400 && respuesta.status < 500) {
-            throw new Error(respuesta.status + " - Error del cliente");
-        }
-
-        if (respuesta.status >= 500 && respuesta.status < 600) {
-            throw new Error(respuesta.status + " - Error del servidor");
-        }
-
         if (!respuesta.ok) {
-            throw new Error("Error HTTP: " + respuesta.status);
+            let mensajeError = "";
+
+            if (respuesta.status === 400) {
+                mensajeError = "400 - Solicitud incorrecta";
+            } else if (respuesta.status === 401) {
+                mensajeError = "401 - No autorizado";
+            } else if (respuesta.status === 403) {
+                mensajeError = "403 - Acceso prohibido";
+            } else if (respuesta.status === 404) {
+                mensajeError = "404 - Recurso no encontrado";
+            } else if (respuesta.status === 405) {
+                mensajeError = "405 - Método no permitido";
+            } else if (respuesta.status === 408) {
+                mensajeError = "408 - Tiempo de espera de la solicitud agotado";
+            } else if (respuesta.status === 409) {
+                mensajeError = "409 - Conflicto con el recurso";
+            } else if (respuesta.status === 429) {
+                mensajeError = "429 - Demasiadas solicitudes";
+            } else if (respuesta.status === 500) {
+                mensajeError = "500 - Error interno del servidor";
+            } else if (respuesta.status === 502) {
+                mensajeError = "502 - Error del servidor intermedio";
+            } else if (respuesta.status === 503) {
+                mensajeError = "503 - Servicio no disponible";
+            } else {
+                mensajeError =
+                    respuesta.status + " - Error HTTP no especificado";
+            }
+
+            throw new Error(mensajeError);
+        }
+
+        // 204 es una respuesta exitosa, pero no contiene JSON para interpretar.
+        if (respuesta.status === 204) {
+            return [];
         }
 
         return respuesta.json();
     })
     .then(function (repositorios) {
-        repositorios.forEach(function (repositorio) {
-            const tarjeta = document.createElement("article");
-            tarjeta.className = "card repo-card";
-            const nombre = document.createElement("h4");
-            nombre.textContent = repositorio.name;
-            const descripcion = document.createElement("p");
-            if (repositorio.description) {
-                descripcion.textContent = repositorio.description;
-            } else {
-                descripcion.textContent = "Sin descripción";
-            }
-
-            const fecha = new Date(repositorio.pushed_at);
-            const ultimoPush = document.createElement("p");
-            ultimoPush.textContent =
-                "Último push: " +
-                fecha.getDate() +
-                "/" +
-                (fecha.getMonth() + 1) +
-                "/" +
-                fecha.getFullYear();
-
-            const enlace = document.createElement("a");
-            enlace.href = repositorio.html_url;
-            enlace.target = "_blank";
-            enlace.textContent = "Ver repositorio";
-            tarjeta.appendChild(nombre);
-            tarjeta.appendChild(descripcion);
-            tarjeta.appendChild(ultimoPush);
-            tarjeta.appendChild(enlace);
-            listaRepos.appendChild(tarjeta);
-        });
+        if (repositorios.length > 0) {
+            mostrarRepositorios(repositorios);
+        } else {
+            mostrarRepositorios(repositoriosGuardados);
+            const aviso = document.createElement("p");
+            aviso.textContent =
+                "La API no devolvió repositorios. Se muestran ejemplos guardados.";
+            listaRepos.appendChild(aviso);
+        }
     })
     .catch(function (error) {
-        console.error("Error:", error);
+        console.error("No se pudieron consultar los repositorios:", error);
 
-        const mensaje = document.createElement("p");
+        // Si falla la API, igualmente se muestran tarjetas del portfolio.
+        mostrarRepositorios(repositoriosGuardados);
 
+        const aviso = document.createElement("p");
+        aviso.className = "mensaje-repos";
         if (error.name === "AbortError") {
-            mensaje.textContent = "La solicitud tardó demasiado.";
+            aviso.textContent =
+                "GitHub tardó demasiado. Se muestran repositorios guardados.";
+        } else if (error.message.includes("Failed to fetch")) {
+            aviso.textContent =
+                "No se pudo conectar con GitHub. Se muestran repositorios guardados.";
         } else {
-            mensaje.textContent = "¡No se pudieron cargar los repositorios!";
+            aviso.textContent =
+                "GitHub: " +
+                error.message +
+                ". Se muestran repositorios guardados.";
         }
 
-        mensaje.style.color = "#f15454";
-        listaRepos.appendChild(mensaje);
+        listaRepos.appendChild(aviso);
     })
     .finally(function () {
         clearTimeout(tiempoEspera);
