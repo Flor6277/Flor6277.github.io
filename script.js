@@ -151,30 +151,7 @@ const tiempoEspera = setTimeout(function () {
     controlador.abort();
 }, 5000);
 
-// Copia local de repositorios que ya aparecen enlazados en el portfolio.
-// Se utiliza solo si falla la API. No representa necesariamente los últimos repositorios.
-const repositoriosGuardados = [
-    {
-        name: "Flor6277.github.io",
-        description: "Repositorio del portfolio personal",
-        pushed_at: null,
-        html_url: "https://github.com/Flor6277/Flor6277.github.io",
-    },
-    {
-        name: "1st-LandingPage",
-        description: "Proyecto de landing page",
-        pushed_at: null,
-        html_url: "https://github.com/Flor6277/1st-LandingPage",
-    },
-    {
-        name: "Clases-Popi",
-        description: "Sitio de clases",
-        pushed_at: null,
-        html_url: "https://github.com/Flor6277/Clases-Popi",
-    },
-];
-
-// Crea las tarjetas HTML con los datos que recibe.
+// Crea las tarjetas HTML con los datos que recibe
 function mostrarRepositorios(repositorios) {
     listaRepos.textContent = "";
 
@@ -219,7 +196,7 @@ function mostrarRepositorios(repositorios) {
     });
 }
 
-// Primero consulta la API real para mostrar los repositorios actualizados.
+// Primero consulta la API real para mostrar los repositorios actualizados
 fetch(
     "https://api.github.com/users/Flor6277/repos?sort=pushed&direction=desc&per_page=3",
     {
@@ -272,7 +249,7 @@ fetch(
         if (repositorios.length > 0) {
             mostrarRepositorios(repositorios);
         } else {
-            mostrarRepositorios(repositoriosGuardados);
+            mostrarRepositorios();
             const aviso = document.createElement("p");
             aviso.textContent =
                 "La API no devolvió repositorios. Se muestran ejemplos guardados.";
@@ -283,7 +260,7 @@ fetch(
         console.error("No se pudieron consultar los repositorios:", error);
 
         // Si falla la API, igualmente se muestran tarjetas del portfolio.
-        mostrarRepositorios(repositoriosGuardados);
+        mostrarRepositorios();
 
         const aviso = document.createElement("p");
         aviso.className = "mensaje-repos";
