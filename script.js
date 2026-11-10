@@ -1,42 +1,39 @@
-// botón para volver arriba
+let botonArriba = document.getElementById("arriba");
+
 window.addEventListener("scroll", function () {
-    let btn = document.getElementById("arriba");
     if (window.scrollY > 200) {
-        btn.style.display = "block";
+        botonArriba.style.display = "block";
     } else {
-        btn.style.display = "none";
+        botonArriba.style.display = "none";
     }
 });
 
-document.getElementById("arriba").addEventListener("click", function () {
+botonArriba.addEventListener("click", function () {
     window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
-// clics en la foto
-let clics_foto = 0;
-let grados_foto = 0;
+let foto = document.getElementById("foto-secreta");
+let mensajeSecreto = document.getElementById("mensaje-secreto");
+let clicsFoto = 0;
 
-document.getElementById("foto-secreta").addEventListener("click", function () {
-    clics_foto++;
-    let foto = document.getElementById("foto-secreta");
-    if (clics_foto === 5) {
-        grados_foto += 720;
+foto.addEventListener("click", function () {
+    clicsFoto++;
+
+    if (clicsFoto === 5) {
         foto.style.transition = "transform 2s";
-        foto.style.transform = "rotate(" + grados_foto + "deg)";
+        foto.style.transform = "rotate(720deg)";
     }
 
-    if (clics_foto === 10) {
-        document.getElementById("mensaje-secreto").style.display = "block";
+    if (clicsFoto === 10) {
+        mensajeSecreto.style.display = "block";
     }
 });
 
-// botón ver más en referencias
 let detalles = document.querySelectorAll(".detalle-referencia");
 let botones = document.querySelectorAll(".ver-mas");
 
 botones.forEach(function (boton, i) {
     boton.addEventListener("click", function () {
-        // si no está desplegado:
         if (detalles[i].style.display === "none") {
             detalles[i].style.display = "inline";
             boton.textContent = "Ver menos";
@@ -47,30 +44,32 @@ botones.forEach(function (boton, i) {
     });
 });
 
-// validaciones en el formulario
 function mostrarError(campo, texto) {
     campo.classList.add("campo-error");
-    let mensaje = document.createElement("p");
-    mensaje.className = "mensaje-error";
-    mensaje.textContent = texto;
-    // si un campo tiene un error, lo marca y agrega debajo un mensaje explicando qué está mal
-    campo.parentElement.appendChild(mensaje);
+
+    let aviso = document.createElement("p");
+    aviso.className = "mensaje-error";
+    aviso.textContent = texto;
+    campo.parentElement.appendChild(aviso);
 }
 
-// quita las marcas y mensajes de error que se produjeron en el formulario
 function limpiarErrores() {
     document.querySelectorAll(".campo-error").forEach(function (campo) {
         campo.classList.remove("campo-error");
     });
-    document.querySelectorAll(".mensaje-error").forEach(function (mensaje) {
-        mensaje.parentNode.removeChild(mensaje);
+
+    document.querySelectorAll(".mensaje-error").forEach(function (aviso) {
+        aviso.parentNode.removeChild(aviso);
     });
 }
 
-document.getElementById("form").addEventListener("submit", function (event) {
-    event.preventDefault();
+let formulario = document.getElementById("form");
+let modal = document.getElementById("modal-envio");
 
+formulario.addEventListener("submit", function (event) {
+    event.preventDefault();
     limpiarErrores();
+
     let correcto = true;
     let nombre = document.getElementById("name");
     let apellido = document.getElementById("last-name");
@@ -117,61 +116,57 @@ document.getElementById("form").addEventListener("submit", function (event) {
 
     if (contacto === null) {
         let opciones = document.querySelector(".opciones-contact");
-
         let aviso = document.createElement("p");
         aviso.className = "mensaje-error";
         aviso.textContent = "Selecciona una opción de contacto";
-
         opciones.appendChild(aviso);
         correcto = false;
     }
 
     if (correcto) {
-        document.getElementById("modal-envio").style.display = "block";
+        modal.style.display = "block";
     }
 });
 
-document.getElementById("cerrar-modal").addEventListener("click", function () {
-    document.getElementById("modal-envio").style.display = "none";
+let cerrarModal = document.getElementById("cerrar-modal");
+
+cerrarModal.addEventListener("click", function () {
+    modal.style.display = "none";
 });
 
-document.getElementById("form").addEventListener("reset", function () {
+formulario.addEventListener("reset", function () {
     limpiarErrores();
 });
 
-// año actual
-let fechaActual = new Date();
-document.getElementById("anio").textContent = fechaActual.getFullYear();
+document.getElementById("anio").textContent = new Date().getFullYear();
 
-// últimos repositorios de GitHub
-const listaRepos = document.querySelector("#repos-recientes");
-const controlador = new AbortController();
+let listaRepos = document.getElementById("repos-recientes");
+let controlador = new AbortController();
 
-const tiempoEspera = setTimeout(function () {
+let tiempoEspera = setTimeout(function () {
     controlador.abort();
 }, 5000);
 
-// Crea las tarjetas HTML con los datos que recibe
 function mostrarRepositorios(repositorios) {
     listaRepos.textContent = "";
 
     repositorios.forEach(function (repositorio) {
-        const tarjeta = document.createElement("article");
+        let tarjeta = document.createElement("article");
         tarjeta.className = "card repo-card";
 
-        const nombre = document.createElement("h4");
+        let nombre = document.createElement("h4");
         nombre.textContent = repositorio.name;
 
-        const descripcion = document.createElement("p");
+        let descripcion = document.createElement("p");
         if (repositorio.description) {
             descripcion.textContent = repositorio.description;
         } else {
             descripcion.textContent = "Sin descripción";
         }
 
-        const ultimoPush = document.createElement("p");
+        let ultimoPush = document.createElement("p");
         if (repositorio.pushed_at) {
-            const fecha = new Date(repositorio.pushed_at);
+            let fecha = new Date(repositorio.pushed_at);
             ultimoPush.textContent =
                 "Último push: " +
                 fecha.getDate() +
@@ -180,12 +175,13 @@ function mostrarRepositorios(repositorios) {
                 "/" +
                 fecha.getFullYear();
         } else {
-            ultimoPush.textContent = "Fecha no disponible en copia local";
+            ultimoPush.textContent = "Fecha no disponible";
         }
 
-        const enlace = document.createElement("a");
+        let enlace = document.createElement("a");
         enlace.href = repositorio.html_url;
         enlace.target = "_blank";
+        enlace.rel = "noopener noreferrer";
         enlace.textContent = "Ver repositorio";
 
         tarjeta.appendChild(nombre);
@@ -196,7 +192,6 @@ function mostrarRepositorios(repositorios) {
     });
 }
 
-// Primero consulta la API real para mostrar los repositorios actualizados
 fetch(
     "https://api.github.com/users/Flor6277/repos?sort=pushed&direction=desc&per_page=3",
     {
@@ -219,7 +214,7 @@ fetch(
             } else if (respuesta.status === 405) {
                 mensajeError = "405 - Método no permitido";
             } else if (respuesta.status === 408) {
-                mensajeError = "408 - Tiempo de espera de la solicitud agotado";
+                mensajeError = "408 - Tiempo de espera agotado";
             } else if (respuesta.status === 409) {
                 mensajeError = "409 - Conflicto con el recurso";
             } else if (respuesta.status === 429) {
@@ -238,7 +233,6 @@ fetch(
             throw new Error(mensajeError);
         }
 
-        // 204 es una respuesta exitosa, pero no contiene JSON para interpretar.
         if (respuesta.status === 204) {
             return [];
         }
@@ -246,35 +240,25 @@ fetch(
         return respuesta.json();
     })
     .then(function (repositorios) {
-        if (repositorios.length > 0) {
-            mostrarRepositorios(repositorios);
-        } else {
-            mostrarRepositorios();
-            const aviso = document.createElement("p");
-            aviso.textContent =
-                "La API no devolvió repositorios. Se muestran ejemplos guardados.";
-            listaRepos.appendChild(aviso);
+        mostrarRepositorios(repositorios);
+
+        if (repositorios.length === 0) {
+            listaRepos.textContent = "La API no devolvió repositorios.";
         }
     })
     .catch(function (error) {
         console.error("No se pudieron consultar los repositorios:", error);
 
-        // Si falla la API, igualmente se muestran tarjetas del portfolio.
-        mostrarRepositorios();
-
-        const aviso = document.createElement("p");
+        listaRepos.textContent = "";
+        let aviso = document.createElement("p");
         aviso.className = "mensaje-repos";
+
         if (error.name === "AbortError") {
-            aviso.textContent =
-                "GitHub tardó demasiado. Se muestran repositorios guardados.";
+            aviso.textContent = "GitHub tardó demasiado en responder.";
         } else if (error.message.includes("Failed to fetch")) {
-            aviso.textContent =
-                "No se pudo conectar con GitHub. Se muestran repositorios guardados.";
+            aviso.textContent = "No se pudo conectar con GitHub.";
         } else {
-            aviso.textContent =
-                "GitHub: " +
-                error.message +
-                ". Se muestran repositorios guardados.";
+            aviso.textContent = "GitHub: " + error.message + ".";
         }
 
         listaRepos.appendChild(aviso);
